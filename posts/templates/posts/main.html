@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}home{%endblock title%}
+
+{% block content %}
+
+<!-- trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#download-modal">
+	download
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="download-modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">download posts</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form action="" method="POST">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button type="submit" class="btn btn-primary">save</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="mt-3">
+{% if object_list %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">title</th>
+				<th scope="col">description</th>
+				<th scope="col">is active</th>
+				<th scope="col">creation date</th>
+				<th scope="col">details</th>
+				<th scope="col">delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for obj in object_list %}
+				<tr>
+					<th>{{ obj.title }}</th>
+					<th>{{ obj.description | truncatewords:3 }}</th>
+					<th>{% if obj.is_active %} yes {% else %} no {% endif %}</th>
+					<th>{{ obj.created | date }}</th>
+					<td>
+						<button class="btn btn-info">select</button>
+					</td>
+					<td>
+						<button class="btn btn-danger">delete</button>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	no posts
+{% endif %}
+</div>
+
+{% endblock content %}
